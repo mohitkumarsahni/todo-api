@@ -1,5 +1,4 @@
 ## ToDo-API
-___
 An API for creating and managing tasks.
 
 ### The API can perform following operations:
