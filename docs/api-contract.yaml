@@ -1,0 +1,491 @@
+openapi: 3.0.3
+info:
+  title: ToDo-API
+  description: |-
+    An API for creating and managing tasks. End user can create, list and update the tasks. End user can also mark the tasks as completed.
+
+  contact:
+    email: mohitkumarsahni@gmail.com
+  version: 1.0.0
+servers:
+  - url: https://to-be-deployed-yet.example.com/api/v3
+tags:
+  - name: tasklists
+    description: Create, read and update task-lists
+  - name: tasks
+    description: Create, read and update tasks
+paths:
+  /tasklists:
+    post:
+      tags:
+        - tasklists
+      summary: Create a new tasklist
+      description: Create a new tasklist.
+      operationId: createTasklist
+      requestBody:
+        description: Create a new task list
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskList-Create-RequestBody'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList-ResponseBody'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - tasklists
+      summary: Update a tasklist
+      description: Update a tasklist.
+      operationId: updateTasklist
+      requestBody:
+        description: Update a tasklist
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskList-Update-RequestBody'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList-ResponseBody'
+        '404':
+          description: Tasklist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tasklists/{tasklist_uuid}:
+    get:
+      tags:
+        - tasklists
+      summary: Fetch a tasklist
+      description: Fetch details of a tasklist by uuid.
+      operationId: getTasklist
+      parameters:
+        - name: tasklist_uuid
+          in: path
+          description: UUID of tasklist
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList-ResponseBody'
+        '422':
+          description: Invalid input uuid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tasklist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - tasklists
+      summary: Delete a tasklist
+      description: Delete a tasklist. Tasks under this tasklist will be deleted as well.
+      operationId: deleteTasklist
+      parameters:
+        - name: tasklist_uuid
+          in: path
+          description: UUID of tasklist
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+        '422':
+          description: Invalid input uuid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tasklist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tasks:
+    post:
+      tags:
+        - tasks
+      summary: Add a new task to the task list
+      description: Add a new task to the task list
+      operationId: addTask
+      requestBody:
+        description: Create a new task in the task list
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task-Create-RequestBody'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task-ResponseBody'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tasklist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - tasks
+      summary: Update a task
+      description: Update a task.
+      operationId: updateTask
+      requestBody:
+        description: Update a task
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task-Update-RequestBody'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList-ResponseBody'
+        '404':
+          description: Tasklist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tasks/{task_uuid}:
+    get:
+      tags:
+        - tasks
+      summary: Fetch a task
+      description: Fetch a task.
+      operationId: getTask
+      parameters:
+        - name: task_uuid
+          in: path
+          description: UUID of task
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task-ResponseBody'
+        '422':
+          description: Invalid input uuid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tasklist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - tasks
+      summary: Delete a task
+      description: Delete a task.
+      operationId: deleteTask
+      parameters:
+        - name: task_uuid
+          in: path
+          description: UUID of task
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+        '422':
+          description: Invalid input uuid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /tasks/tasklist/{tasklist_uuid}:
+    get:
+      tags:
+        - tasks
+      summary: Fetch all tasks by tasklist uuid
+      description: Fetch all tasks by tasklist uuid.
+      operationId: getAllTasksByTasklistUuid
+      parameters:
+        - name: tasklist_uuid
+          in: path
+          description: UUID of tasklist
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task-ResponseBody'
+        '422':
+          description: Invalid input uuid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Tasklist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          format: string
+        message:
+          type: string
+          format: string
+    TaskList-Create-RequestBody:
+      required:
+        - description
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          format: string
+          minLength: 1
+          maxLength: 64
+        description:
+          type: string
+          format: string
+          minLength: 1
+          maxLength: 256
+    TaskList-ResponseBody:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+    TaskList-Update-RequestBody:
+      required:
+        - uuid
+        - description
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+        description:
+          type: string
+          format: string
+          minLength: 1
+          maxLength: 256
+    Task-Create-RequestBody:
+      required:
+        - description
+        - name
+        - tasklist_uuid
+      type: object
+      properties:
+        name:
+          type: string
+          format: string
+          minLength: 1
+          maxLength: 64
+        description:
+          type: string
+          format: string
+          minLength: 1
+          maxLength: 256
+        tasklist_uuid:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+    Task-Update-RequestBody:
+      required:
+        - uuid
+        - description
+        - status
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+        description:
+          type: string
+          format: string
+          minLength: 1
+          maxLength: 256
+        status:
+          type: string
+          format: string
+    Task-ResponseBody:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        tasklist_uuid:
+          type: string
+          format: uuid
+  requestBodies:
+    TaskList-Create:
+      description: Task List that needs to be created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TaskList-Create-RequestBody'
+    TaskList-Update:
+      description: Task List that needs to be updated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TaskList-Update-RequestBody'
+    Task-Create:
+      description: Task that needs to be added to the task list
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Task-Create-RequestBody'
+    Task-Update:
+      description: Update a task
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Task-Update-RequestBody'
