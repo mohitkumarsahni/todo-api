@@ -1,4 +1,4 @@
-package com.sahni.model;
+package com.sahni.models;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,15 +6,14 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "task_lists")
+@Table(name = "tasks")
 @Getter
 @Setter
 @Builder
-public class TaskLists extends Auditable {
+public class Tasks extends Auditable {
 
     @Id
     @Column(name = "uuid")
@@ -27,6 +26,12 @@ public class TaskLists extends Auditable {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "taskList")
-    private List<Tasks> tasks;
+    @Column(name = "status")
+    private TaskStatus status;
+
+    @ManyToOne
+    @JoinColumn(name="task_list_uuid")
+    @Type(type = "org.hibernate.type.UUIDCharType")
+    private TaskLists taskList;
+
 }

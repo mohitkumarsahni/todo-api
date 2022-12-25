@@ -1,4 +1,4 @@
-package com.sahni.model;
+package com.sahni.models;
 
 import lombok.Getter;
 import lombok.Setter;
