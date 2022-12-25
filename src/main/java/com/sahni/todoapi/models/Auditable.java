@@ -1,4 +1,4 @@
-package com.sahni.models;
+package com.sahni.todoapi.models;
 
 import lombok.Getter;
 import lombok.Setter;

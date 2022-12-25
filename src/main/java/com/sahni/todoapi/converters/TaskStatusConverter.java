@@ -1,6 +1,6 @@
-package com.sahni.converters;
+package com.sahni.todoapi.converters;
 
-import com.sahni.models.TaskStatus;
+import com.sahni.todoapi.models.TaskStatus;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
