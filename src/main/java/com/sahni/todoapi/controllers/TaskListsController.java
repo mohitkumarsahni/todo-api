@@ -1,11 +1,12 @@
 package com.sahni.todoapi.controllers;
 
 import ch.qos.logback.classic.Logger;
+import com.sahni.todoapi.exceptionhandle.ToDoAppException;
+import com.sahni.todoapi.models.responses.TaskListResponse;
 import com.sahni.todoapi.services.TaskListsService;
 import org.slf4j.LoggerFactory;
 import com.sahni.todoapi.models.requests.CreateTaskListRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +22,8 @@ public class TaskListsController {
     private TaskListsService taskListsService;
 
     @PostMapping(API + "/" + VERSION_1 + "/" + TASKLISTS_ENDPOINT)
-    public ResponseEntity<?> createTaskList(@RequestBody(required = true) CreateTaskListRequest createTaskListRequest) {
+    public TaskListResponse createTaskList(@RequestBody(required = true) CreateTaskListRequest createTaskListRequest) throws ToDoAppException {
         log.info("Incoming request for task list creation.");
-        return null;
+        return taskListsService.createTaskList(createTaskListRequest);
     }
 }
