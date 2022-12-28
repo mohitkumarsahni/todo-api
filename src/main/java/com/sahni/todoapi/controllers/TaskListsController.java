@@ -2,12 +2,14 @@ package com.sahni.todoapi.controllers;
 
 import ch.qos.logback.classic.Logger;
 import com.sahni.todoapi.exceptionhandle.ToDoAppException;
+import com.sahni.todoapi.models.requests.UpdateTaskListRequest;
 import com.sahni.todoapi.models.responses.TaskListResponse;
 import com.sahni.todoapi.services.TaskListsService;
 import org.slf4j.LoggerFactory;
 import com.sahni.todoapi.models.requests.CreateTaskListRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +30,16 @@ public class TaskListsController {
             return taskListsService.createTaskList(createTaskListRequest);
         } finally {
             log.info("Processing for task list creation request finished.");
+        }
+    }
+
+    @PutMapping(API + "/" + VERSION_1 + "/" + TASKLISTS_ENDPOINT)
+    public TaskListResponse updateTaskList(@RequestBody(required = true) UpdateTaskListRequest updateTaskListRequest) throws ToDoAppException {
+        try {
+            log.info("Incoming request for task list update.");
+            return taskListsService.updateTaskList(updateTaskListRequest);
+        } finally {
+            log.info("Processing for task list update request finished.");
         }
     }
 }

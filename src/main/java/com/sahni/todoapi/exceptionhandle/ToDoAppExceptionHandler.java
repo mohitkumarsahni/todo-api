@@ -28,7 +28,7 @@ public class ToDoAppExceptionHandler {
                                 .code(TO_DO_APP_ERROR_002.name())
                                 .message(ex.getMessage())
                                 .build(),
-                        HttpStatus.UNPROCESSABLE_ENTITY
+                        HttpStatus.NOT_FOUND
                 );
             case TO_DO_APP_ERROR_003:
                 return new ResponseEntity<> (
@@ -36,7 +36,15 @@ public class ToDoAppExceptionHandler {
                                 .code(TO_DO_APP_ERROR_003.name())
                                 .message(ex.getMessage())
                                 .build(),
-                        HttpStatus.UNPROCESSABLE_ENTITY
+                        HttpStatus.INTERNAL_SERVER_ERROR
+                );
+            case TO_DO_APP_ERROR_004:
+                return new ResponseEntity<> (
+                        ErrorResponse.builder()
+                                .code(TO_DO_APP_ERROR_004.name())
+                                .message(ex.getMessage())
+                                .build(),
+                        HttpStatus.CONFLICT
                 );
         }
 
