@@ -23,7 +23,11 @@ public class TaskListsController {
 
     @PostMapping(API + "/" + VERSION_1 + "/" + TASKLISTS_ENDPOINT)
     public TaskListResponse createTaskList(@RequestBody(required = true) CreateTaskListRequest createTaskListRequest) throws ToDoAppException {
-        log.info("Incoming request for task list creation.");
-        return taskListsService.createTaskList(createTaskListRequest);
+        try {
+            log.info("Incoming request for task list creation.");
+            return taskListsService.createTaskList(createTaskListRequest);
+        } finally {
+            log.info("Processing for task list creation request finished.");
+        }
     }
 }

@@ -1,8 +1,11 @@
 package com.sahni.todoapi.validations;
 
+import ch.qos.logback.classic.Logger;
 import com.sahni.todoapi.exceptionhandle.ToDoAppErrors;
 import com.sahni.todoapi.exceptionhandle.ToDoAppException;
 import com.sahni.todoapi.models.requests.CreateTaskListRequest;
+import com.sahni.todoapi.services.TaskListsService;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -13,11 +16,15 @@ import static com.sahni.todoapi.exceptionhandle.ToDoAppErrorMessages.*;
 
 @Component
 public class TaskListsValidator implements Validator {
+
+    private static final Logger log = (Logger) LoggerFactory.getLogger(TaskListsValidator.class);
+
     @Override
     public <T> void validate(T object) throws ToDoAppException {
         CreateTaskListRequest createTaskListRequest = (CreateTaskListRequest) object;
         validateMandatory(createTaskListRequest.getName());
         validateLengths(createTaskListRequest);
+        log.info("Received request object for task list has been validated.");
     }
 
     private void validateLengths(CreateTaskListRequest createTaskListRequest) throws ToDoAppException{
