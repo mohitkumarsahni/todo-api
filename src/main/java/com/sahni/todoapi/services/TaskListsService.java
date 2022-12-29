@@ -8,6 +8,7 @@ import com.sahni.todoapi.models.requests.UpdateTaskListRequest;
 import com.sahni.todoapi.models.responses.TaskListResponse;
 import com.sahni.todoapi.repositories.TaskListsRepository;
 import com.sahni.todoapi.validations.CreateTaskListsValidator;
+import com.sahni.todoapi.validations.GetTaskListsValidator;
 import com.sahni.todoapi.validations.UpdateTaskListsValidator;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class TaskListsService {
 
     @Autowired
     private UpdateTaskListsValidator updateTaskListsValidator;
+
+    @Autowired
+    private GetTaskListsValidator getTaskListsValidator;
 
     @Autowired
     private TaskListsRepository taskListsRepository;
@@ -111,5 +115,48 @@ public class TaskListsService {
             throw new ToDoAppException(TASK_LIST_NOT_FOUND_MESSAGE, TO_DO_APP_ERROR_002);
         }
         return taskListsOptional.get();
+    }
+
+    public TaskListResponse getTaskList(String taskListUuid) throws ToDoAppException {
+        log.info("Processing request for task list fetch.");
+        getTaskListsValidator.validate(taskListUuid);
+        TaskLists taskLists = fetchTaskList(taskListUuid);
+        return TaskListResponse.builder()
+                .uuid(taskLists.getUuid())
+                .name(taskLists.getName())
+                .description(taskLists.getDescription())
+                .build();
+    }
+
+    private TaskLists fetchTaskList(String taskListUuid) throws ToDoAppException {
+        Optional<TaskLists> taskListsOptional = Optional.empty();
+        try {
+            taskListsOptional = taskListsRepository.findById(UUID.fromString(taskListUuid));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (taskListsOptional.isEmpty() || taskListsOptional.get().getIsDeleted()) {
+            log.info("Task list with uuid : " + taskListUuid + " either does not exist or deleted. Sending error response.");
+            throw new ToDoAppException(TASK_LIST_NOT_FOUND_MESSAGE, TO_DO_APP_ERROR_002);
+        }
+        return taskListsOptional.get();
+    }
+
+    public void deleteTaskList(String taskListUuid) throws ToDoAppException {
+        log.info("Processing request for task list delete.");
+        getTaskListsValidator.validate(taskListUuid);
+        TaskLists taskLists = checkExistence(UUID.fromString(taskListUuid));
+        deleteTaskListInDB(taskLists);
+    }
+
+    private void deleteTaskListInDB(TaskLists taskLists) {
+        try {
+            taskLists.setIsDeleted(true);
+            taskLists.setUpdatedAt(new Date());
+            taskListsRepository.save(taskLists);
+            log.info("Task list has been deleted.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
