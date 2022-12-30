@@ -1,7 +1,8 @@
-package com.sahni.todoapi.validations;
+package com.sahni.todoapi.validations.tasklists;
 
 import com.sahni.todoapi.exceptionhandle.ToDoAppErrors;
 import com.sahni.todoapi.exceptionhandle.ToDoAppException;
+import com.sahni.todoapi.validations.Validator;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
