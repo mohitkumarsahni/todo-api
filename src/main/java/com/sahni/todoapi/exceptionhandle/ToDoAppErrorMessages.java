@@ -9,4 +9,5 @@ public class ToDoAppErrorMessages {
     public static final String DESCRIPTION_MANDATORY_FIELD_MESSAGE = "Description can not be null. And should be of 256 characters.";
     public static final String UUID_INVALID_MESSAGE = "Provided UUID is not a valid UUID. It should be a valid UUID of 36 characters.";
     public static final String TASK_LIST_NOT_FOUND_MESSAGE = "Task List with provided uuid either does not exist or has been deleted.";
+    public static final String TASK_NOT_FOUND_MESSAGE = "Task with provided uuid either does not exist or has been deleted.";
 }

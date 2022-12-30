@@ -7,9 +7,9 @@ import com.sahni.todoapi.models.responses.TaskResponse;
 import com.sahni.todoapi.services.TasksService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.sahni.todoapi.constants.ToDoAPIConstants.*;
 
@@ -28,6 +28,36 @@ public class TasksController {
             return tasksService.createTask(createTaskRequest);
         } finally {
             log.info("Processing for task creation request finished.");
+        }
+    }
+
+    @GetMapping(API + "/" + VERSION_1 + "/" + TASKS_ENDPOINT + "/" + "{task_uuid}")
+    public TaskResponse fetchTask(@PathVariable(name = "task_uuid", required = true) String taskUuid) throws ToDoAppException {
+        try {
+            log.info("Incoming request for task fetch.");
+            return tasksService.getTask(taskUuid);
+        } finally {
+            log.info("Processing for task fetch request finished.");
+        }
+    }
+
+    @DeleteMapping(API + "/" + VERSION_1 + "/" + TASKS_ENDPOINT + "/" + "{task_uuid}")
+    public void deleteTask(@PathVariable(name = "task_uuid", required = true) String taskUuid) throws ToDoAppException {
+        try {
+            log.info("Incoming request for task delete.");
+            tasksService.deleteTask(taskUuid);
+        } finally {
+            log.info("Processing for task delete request finished.");
+        }
+    }
+
+    @GetMapping(API + "/" + VERSION_1 + "/" + TASKS_ENDPOINT + "/" + TASKLIST_ENDPOINT + "/" + "{tasklist_uuid}")
+    public List<TaskResponse> fetchTasks(@PathVariable(name = "tasklist_uuid", required = true) String taskListUuid) throws ToDoAppException {
+        try {
+            log.info("Incoming request for tasks fetch.");
+            return tasksService.getTasks(taskListUuid);
+        } finally {
+            log.info("Processing for task fetch request finished.");
         }
     }
 }
