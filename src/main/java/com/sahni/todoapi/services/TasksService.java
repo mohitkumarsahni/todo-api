@@ -6,11 +6,13 @@ import com.sahni.todoapi.models.TaskLists;
 import com.sahni.todoapi.models.TaskStatus;
 import com.sahni.todoapi.models.Tasks;
 import com.sahni.todoapi.models.requests.CreateTaskRequest;
+import com.sahni.todoapi.models.requests.UpdateTaskRequest;
 import com.sahni.todoapi.models.responses.TaskResponse;
 import com.sahni.todoapi.repositories.TaskListsRepository;
 import com.sahni.todoapi.repositories.TasksRepository;
 import com.sahni.todoapi.validations.tasks.CreateTaskValidator;
 import com.sahni.todoapi.validations.tasks.GetTaskValidator;
+import com.sahni.todoapi.validations.tasks.UpdateTaskValidator;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class TasksService {
 
     @Autowired
     private GetTaskValidator getTaskValidator;
+
+    @Autowired
+    private UpdateTaskValidator updateTaskValidator;
 
     @Autowired
     private TaskListsRepository taskListsRepository;
@@ -180,5 +185,37 @@ public class TasksService {
             throw new ToDoAppException(TASK_LIST_NOT_FOUND_MESSAGE, TO_DO_APP_ERROR_002);
         }
         return taskListsOptional.get();
+    }
+
+    public TaskResponse updateTask(UpdateTaskRequest updateTaskRequest) throws ToDoAppException {
+        updateTaskValidator.validate(updateTaskRequest);
+        Tasks newTask = updateTaskInDB(updateTaskRequest);
+        return TaskResponse.builder()
+                .uuid(newTask.getUuid())
+                .name(newTask.getName())
+                .taskListUuid(newTask.getTaskList().getUuid())
+                .status(newTask.getStatus())
+                .description(newTask.getDescription())
+                .build();
+    }
+
+    private Tasks updateTaskInDB(UpdateTaskRequest updateTaskRequest) throws ToDoAppException {
+        Tasks task = checkTaskExistence(UUID.fromString(updateTaskRequest.getUuid()));
+        if (Objects.nonNull(updateTaskRequest.getDescription())) {
+            task.setDescription(updateTaskRequest.getDescription());
+        }
+        if (Objects.nonNull(updateTaskRequest.getStatus())) {
+            Optional<TaskStatus> status = Arrays.stream(TaskStatus.values()).filter(taskStatus -> taskStatus.name().equals(updateTaskRequest.getStatus())).findFirst();
+            task.setStatus(status.get());
+        }
+        task.setUpdatedAt(new Date());
+        Tasks newTask = null;
+        try {
+            newTask = tasksRepository.save(task);
+            log.info("Task has been updated. Returning the updated object.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return newTask;
     }
 }

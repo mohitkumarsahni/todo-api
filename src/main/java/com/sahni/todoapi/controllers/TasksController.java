@@ -3,6 +3,7 @@ package com.sahni.todoapi.controllers;
 import ch.qos.logback.classic.Logger;
 import com.sahni.todoapi.exceptionhandle.ToDoAppException;
 import com.sahni.todoapi.models.requests.CreateTaskRequest;
+import com.sahni.todoapi.models.requests.UpdateTaskRequest;
 import com.sahni.todoapi.models.responses.TaskResponse;
 import com.sahni.todoapi.services.TasksService;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,16 @@ public class TasksController {
             return tasksService.createTask(createTaskRequest);
         } finally {
             log.info("Processing for task creation request finished.");
+        }
+    }
+
+    @PutMapping(API + "/" + VERSION_1 + "/" + TASKS_ENDPOINT)
+    public TaskResponse updateTask(@RequestBody(required = true) UpdateTaskRequest updateTaskRequest) throws ToDoAppException {
+        try {
+            log.info("Incoming request for task update.");
+            return tasksService.updateTask(updateTaskRequest);
+        } finally {
+            log.info("Processing for task update request finished.");
         }
     }
 
