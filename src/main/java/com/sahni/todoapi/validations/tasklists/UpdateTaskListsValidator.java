@@ -1,9 +1,10 @@
-package com.sahni.todoapi.validations;
+package com.sahni.todoapi.validations.tasklists;
 
 import ch.qos.logback.classic.Logger;
 import com.sahni.todoapi.exceptionhandle.ToDoAppErrors;
 import com.sahni.todoapi.exceptionhandle.ToDoAppException;
 import com.sahni.todoapi.models.requests.UpdateTaskListRequest;
+import com.sahni.todoapi.validations.Validator;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
