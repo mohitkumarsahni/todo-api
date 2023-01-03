@@ -40,3 +40,9 @@ Please see the [openapi contract](./docs/api-contract.yaml) for API endpoints an
   - DB_USERNAME
 - In IntelliJ IDEA, environment variables can be added from Run -> Edit Configurations -> Environment Variables
 - Run the project.
+
+### Pending Work
+- Unit Testing
+- How to deploy with docker on ubuntu
+- How to deploy with Azure Web App Service
+- Authorization & Authentication
