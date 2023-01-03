@@ -21,13 +21,10 @@ Please see the [openapi contract](./docs/api-contract.yaml) for API endpoints an
 - This application requires Java 11.
 - Please refer to the following link to download and install Java-11: [Java-11](https://www.oracle.com/in/java/technologies/javase/jdk11-archive-downloads.html)
 
-#### Install MySQL-8
+#### Install & Setup Database
 - This application requires MySQL 8.
 - Please refer to the following link to download and install MySQL-8: [MySQL-8](https://dev.mysql.com/doc/refman/8.0/en/installing.html)
-
-#### Create database
-- Create a database.
-- Create a user and grant access to the user on database created in previous step.
+- To create database and user you can run following script: [db_setup.sql](./docs/database/db_setup.sql)
 
 ### Running the application
 - Clone the repository.
