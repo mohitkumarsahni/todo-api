@@ -38,6 +38,10 @@ Please see the [openapi contract](./docs/api-contract.yaml) for API endpoints an
 - In IntelliJ IDEA, environment variables can be added from Run -> Edit Configurations -> Environment Variables
 - Run the project.
 
+### Build & run with Docker on Ubuntu
+- Install Docker from: [Docker](https://docs.docker.com/engine/install/ubuntu/)
+- 
+
 ### Pending Work
 - Unit Testing
 - How to deploy with docker on ubuntu
