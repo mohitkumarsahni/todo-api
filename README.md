@@ -40,7 +40,14 @@ Please see the [openapi contract](./docs/api-contract.yaml) for API endpoints an
 
 ### Build & run with Docker on Ubuntu
 - Install Docker from: [Docker](https://docs.docker.com/engine/install/ubuntu/)
-- 
+- In terminal switch to project directory.
+- Use following command: `docker build -t todo-api:1.0.0 .`
+- Above command will build the image.
+- Now run the following command:
+
+  `sudo docker run todo-api:1.0.0 -e "DB_HOST=<DB_HOST>" -e "DB_PORT=<DB_PORT>" -e "DB_NAME=<DB_NAME>" -e "DB_USERNAME=<DB_USERNAME>" -e "DB_PASSWORD=<DB_PASSWORD>" -p 8080:8080 -d `
+- Change the actual variable value in angle brackets.
+- It will spin up a container which can be accessed on `http://localhost:8080/`
 
 ### Pending Work
 - Unit Testing
