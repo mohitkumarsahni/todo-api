@@ -1,0 +1,8 @@
+FROM openjdk:18-ea-11-jdk-alpine3.15
+ENV DB_HOST=$DB_HOST
+ENV DB_NAME=$DB_NAME
+ENV DB_PASSWORD=$DB_PASSWORD
+ENV DB_PORT=$DB_PORT
+ENV DB_USERNAME=$DB_USERNAME
+COPY target/todo-api-1.0-SNAPSHOT.jar todo-api-1.0-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/todo-api-1.0-SNAPSHOT.jar"]
